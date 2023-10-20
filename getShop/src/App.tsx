@@ -1,12 +1,13 @@
 import './App.css'
-import Video from "./components/Video/Video.tsx";
+import Main from "./page/Main.tsx";
+import Aside from "./components/Aside/Aside.tsx";
 
 
 function App() {
 
   return (
     <>
-      <Video />
+     <Aside />
     </>
   )
 }
