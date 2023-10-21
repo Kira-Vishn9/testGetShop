@@ -1,26 +1,38 @@
-import React from 'react';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import './index.css';
 
-const NumPud = ({ input, setInput, handleInputChange }) => {
-    const onChange = (input) => {
-        console.log("Input changed", input);
-        setInput(input);
-        handleInputChange(input)
-    }
-
+const NumPud = ({ input, setInput, sendNumber }) => {
     const onKeyPress = (button) => {
-        if (button === "{bksp}") {
-            // Handle backspace
-            setInput((prevInput) => prevInput.slice(0, -1));
+        if (button === "стереть") {
+            setInput((prevInput) => {
+                const lastIndex = prevInput.split("").reverse().findIndex((char, index) => {
+                    return index <14 && !isNaN(parseInt(char, 14));
+                });
+
+                if (lastIndex !== -1) {
+                    const lastNumber = prevInput.length - lastIndex - 1;
+                    prevInput = prevInput.substring(0, lastNumber) + "_" + prevInput.substring(lastNumber + 1);
+                }
+                return prevInput;
+            });
+        } else {
+            setInput((prevInput) => {
+                const index = prevInput.split('').indexOf('_');
+                if (index !== -1) {
+                    const newValue = prevInput.split('');
+                    newValue[index] = button;
+                    return newValue.join('');
+                } else {
+                    return prevInput;
+                }
+            });
         }
-    }
+    };
 
     return (
         <Keyboard
-            layout={{ default: ["1 2 3", "4 5 6", "7 8 9", "{bksp} 0"] }}
-            onChange={onChange}
+            layout={{ default: ["1 2 3", "4 5 6", "7 8 9", "стереть 0"] }}
             onKeyPress={onKeyPress}
         />
     );
