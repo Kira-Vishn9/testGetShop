@@ -1,8 +1,13 @@
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import './index.css';
+import keyNavigation from "simple-keyboard-key-navigation";
+import {useEffect, useRef, useState} from "react";
+
 
 const NumPud = ({ input, setInput, sendNumber }) => {
+    const keyboard = useRef(null);
+
     const onKeyPress = (button) => {
         if (button === "стереть") {
             setInput((prevInput) => {
@@ -30,10 +35,14 @@ const NumPud = ({ input, setInput, sendNumber }) => {
         }
     };
 
+
     return (
         <Keyboard
             layout={{ default: ["1 2 3", "4 5 6", "7 8 9", "стереть 0"] }}
             onKeyPress={onKeyPress}
+            physicalKeyboardHighlight={true}
+            keyboardRef={(r) => (keyboard.current = r)}
+
         />
     );
 }
