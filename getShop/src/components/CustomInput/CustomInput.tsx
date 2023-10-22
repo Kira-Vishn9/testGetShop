@@ -1,33 +1,31 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { IMaskInput } from 'react-imask';
 import TextField from '@mui/material/TextField';
 
+type TextMaskCustomProps = {
+    name: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
-    const { onChange, ...other } = props;
+const TextMaskCustom = React.forwardRef<HTMLInputElement, TextMaskCustomProps>(function TextMaskCustom(props, ref) {
+    const { onChange, name, ...other } = props; // Добавил "name" к деструктурированным свойствам
     return (
         <IMaskInput
             {...other}
             mask="+7(___) ___-__-__"
             inputRef={ref}
-            onAccept={(value) => onChange({ target: { name: props.name, value } })}
+            onAccept={(value) => onChange({ target: { name, value } })}
             overwrite
         />
     );
 });
 
-TextMaskCustom.propTypes = {
-    name: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-};
-
-export default function CustomInput({ value, onChange }) {
+export default function CustomInput({ value, onChange }: { value: string, onChange: (event: React.ChangeEvent<HTMLInputElement>) => void }) {
     return (
         <TextField
             value={value}
             onChange={(event) => onChange(event)}
-            inputcomponent={TextMaskCustom}
+            inputComponent={TextMaskCustom}
         />
     );
 }
