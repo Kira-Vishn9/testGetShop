@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
+import {useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import NumPud from "../KeyBoard/KeyBoard.tsx";
+import NumPud from "../NumPud/NumPud.tsx";
 import CustomInput from "../CustomInput/CustomInput.tsx";
 
 const theme = createTheme({
@@ -55,16 +55,13 @@ const Aside = () => {
         } else{
             const inputValue = event.nativeEvent.data
             setInput((prevInput) => {
-
                 const index = prevInput.indexOf("_");
                 if(index === 16 && isAllow) {
                     setIsDisabled(false)
                 }
                 if (index !== -1) {
                     const newValue = prevInput.split("");
-
                     newValue[index] = inputValue;
-                    console.log(newValue[index] = inputValue)
                     return newValue.join("");
                 }else{
                     return prevInput

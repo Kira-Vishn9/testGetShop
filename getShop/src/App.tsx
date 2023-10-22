@@ -1,18 +1,16 @@
 import './App.css'
 import Aside from "./components/Aside/Aside.tsx";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext, createContext} from "react";
 
-
+export const ThemeContext = createContext(null);
 function App() {
-    const [isActive, setIsActive] = useState(false);
+    const [button, setButton] = useState("");
 
     const handleKeyDown = (e: KeyboardEvent) => {
-        console.log(e.key)
-        // if (e.key === "ArrowUp") keyboard.modules.keyNavigation.up();
-        // else if (e.key === "ArrowDown") keyboard.modules.keyNavigation.down();
-        // else if (e.key === "ArrowLeft") keyboard.modules.keyNavigation.left();
-        // else if (e.key === "ArrowRight") keyboard.modules.keyNavigation.right();
-        // else if (e.key === "Enter") keyboard.modules.keyNavigation.press();
+        if (e.key === 'Tab') {
+            e.preventDefault();
+        }else{setButton(e.key)}
+
     };
 
     useEffect(() => {
@@ -23,7 +21,9 @@ function App() {
     }, []);
   return (
     <>
-     <Aside />
+        <ThemeContext.Provider value={{button, setButton}}>
+            <Aside />
+        </ThemeContext.Provider>
     </>
   )
 }
