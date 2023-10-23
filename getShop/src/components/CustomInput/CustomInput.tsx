@@ -12,7 +12,7 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, TextMaskCustomProps>(f
     return (
         <IMaskInput
             {...other}
-            mask="+7(___) ___-__-__"
+            mask="+7(___)___-__-__"
             inputRef={ref}
             onAccept={(value) => onChange({ target: { name, value } })}
             overwrite
@@ -26,6 +26,7 @@ export default function CustomInput({ value, onChange }: { value: string, onChan
             value={value}
             onChange={(event) => onChange(event)}
             inputComponent={TextMaskCustom}
+            variant="standard"
         />
     );
 }

@@ -13,6 +13,12 @@ const NumPad = ({setInput}) => {
         [4, 5, 6],
         [7, 8, 9],
         ['Cтереть', 0],
+        [
+            <div className={'close-button'}>
+                <span className={"bar"}></span>
+                <span className={"bar"}></span>
+            </div>
+        ]
     ];
     const moveDown = (array) => {
         if(currentRow === 1 && currentCol === 2){
@@ -147,7 +153,7 @@ const NumPad = ({setInput}) => {
                 onBackspace()
                 break;
             default:
-                console.log(button)
+                console.log(JSON.stringify(button))
         }
         setButton('')
     }

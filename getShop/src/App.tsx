@@ -1,6 +1,6 @@
 import './App.css'
-import Aside from "./components/Aside/Aside.tsx";
-import {useEffect, useState, useContext, createContext} from "react";
+import {useEffect, useState, createContext} from "react";
+import Main from "./page/Main.tsx";
 
 export const ThemeContext = createContext(null);
 function App() {
@@ -22,7 +22,7 @@ function App() {
   return (
     <>
         <ThemeContext.Provider value={{button, setButton}}>
-            <Aside />
+            <Main />
         </ThemeContext.Provider>
     </>
   )

@@ -1,10 +1,11 @@
 /* Стили для клавиатуры в виде телефонной клавиатуры */
 .keyboard {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
+    grid-template-columns: repeat(3, 88px);
+    justify-content: center;
+    gap: 10px;
     max-width: 300px;
-    margin: 0 auto;
+    margin: 36px 0px 25px 0px;
 }
 
 .keyboard-button {
@@ -20,6 +21,35 @@
 .keyboard div:nth-child(10) {
     grid-column: span 2;
 }
+.keyboard div:nth-child(12) {
+    display: flex;
+    width: 65px;
+    position: absolute;
+    background-color: #fff;
+    top: 0;
+    right: 0;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    height: 28px;
+}
+.close-button{
+    display: flex;
+}
+.bar {
+    position: relative;
+    top: 50%;
+    left: 0;
+    transform: translate(55%, -50%) rotate(-45deg);
+    width: 30px;
+    height: 3px;
+    background: black;
+}
+
+.bar:nth-child(2) {
+    transform: translate(-45%, -50%) rotate(45deg);
+    background: black;
+}
 
 .keyboard .active {
     pointer-events: none;
@@ -28,7 +58,7 @@
 }
 
 .keyboard button[data-value="Cтереть"] {
-    width: 500px;
+    width: 200px;
     background: #f00;
     color: #fff;
 }
@@ -38,6 +68,6 @@
 }
 
 button:focus {
-    outline: none; /* Убираем стандартное выделение */
-    box-shadow: none; /* Убираем стандартную тень фокуса */
+    outline: none;
+    box-shadow: none;
 }
