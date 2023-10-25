@@ -3,7 +3,7 @@ import { ThemeContext } from '../../App';
 import './index.css';
 import {useNavigate} from "react-router-dom";
 
-const NumPad = ({setInput}) => {
+const NumPad = ({setIsDisabled,setInput}) => {
     let [currentRow, setCurrentRow] = useState<string | number>(1)
     let [currentCol, setCurrentCol] = useState<string | number>(1)
     const [activeButton, setActiveButton] = useState([currentRow, currentCol]);
@@ -15,7 +15,7 @@ const NumPad = ({setInput}) => {
         [4, 5, 6],
         [7, 8, 9],
         ['Cтереть', 0],
-        ['x']
+        ['X']
     ];
     const onChengeRouter = () => {
         navigate('/');
@@ -65,20 +65,16 @@ const NumPad = ({setInput}) => {
         console.log(inputValue)
         if(inputValue === 'Cтереть') {
             onBackspace()
-        }  else{
-            console.log(inputValue)
+        }  else if (inputValue === 'X') {
+            onChengeRouter()
+        }else{
             onChangeInputValue(inputValue)
         }}
     const onChangeInputValue = (button: string | number) => {
-        console.log(button)
         setInput((prevInput) => {
             const index = prevInput.indexOf("_");
-            // if(index === 16 && isAllow) {
-            //     setIsDisabled(false)
-            // }
             if (index !== -1) {
                 const newValue = prevInput.split("");
-
                 newValue[index] = button;
                 return newValue.join("");
             }else{
@@ -97,6 +93,7 @@ const NumPad = ({setInput}) => {
             }
             return prevInput;
         });
+        setIsDisabled(true)
         setButton('')
     }
     const onChageActive = (row: string | number, col: string |number, button?: string | number) => {
@@ -159,8 +156,8 @@ const NumPad = ({setInput}) => {
                 onChageActive(3, 0)
                 onBackspace()
                 break;
-            case 'x':
-                console.log('x')
+            case 'X':
+                console.log('X')
                 onChageActive(4, 0)
                 onChengeRouter()
                 break;
@@ -193,7 +190,6 @@ const NumPad = ({setInput}) => {
     }
 
     useEffect(() => {
-
         handleKeyPress();
     }, [button]);
 
@@ -202,7 +198,8 @@ const NumPad = ({setInput}) => {
         if (value === 'Cтереть') {
             onBackspace()
             onChageActive(3, 0)
-            } else if(value === 'x'){
+            setIsDisabled(true)
+            } else if(value === 'X'){
             onChengeRouter()
         }else{
             onNavigaionNumber(value.toString())

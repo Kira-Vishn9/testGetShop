@@ -20,13 +20,15 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, TextMaskCustomProps>(f
     );
 });
 
-export default function CustomInput({ value, onChange }: { value: string, onChange: (event: React.ChangeEvent<HTMLInputElement>) => void }) {
+export default function CustomInput({isError ,value, onChange }: {isError: boolean, value: string, onChange: (event: React.ChangeEvent<HTMLInputElement>) => void }) {
     return (
         <TextField
             value={value}
             onChange={(event) => onChange(event)}
             inputcomponent={TextMaskCustom}
             variant="standard"
+            error={isError}
+            disabled
         />
     );
 }

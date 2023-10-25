@@ -5,6 +5,8 @@ import img from '../../assets/jpg/qr-code.jpg';
 import { ThemeProvider ,createTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import {useContext} from "react";
+import {ThemeContext} from "../../App.tsx";
 
 const theme = createTheme({
     components: {
@@ -27,6 +29,7 @@ const theme = createTheme({
 
 const Banner = () => {
     const navigate = useNavigate();
+
    const onChengeRouter = () => {
        navigate('/main');
     }
