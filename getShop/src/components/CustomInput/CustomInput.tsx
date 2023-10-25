@@ -25,10 +25,12 @@ export default function CustomInput({isError ,value, onChange }: {isError: boole
         <TextField
             value={value}
             onChange={(event) => onChange(event)}
-            inputcomponent={TextMaskCustom}
+            inputComponent={TextMaskCustom}
             variant="standard"
             error={isError}
-            disabled
+            InputProps={{
+                readOnly: true,
+            }}
         />
     );
 }

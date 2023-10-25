@@ -1,43 +1,64 @@
 import './App.css'
-import {useEffect, useState, createContext} from "react";
+import { useEffect, useState, createContext } from "react";
 import Main from "./page/Main.tsx";
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import Video from "./components/Video/Video.tsx";
 import FinalyPage from "./page/FinalyPage.tsx";
 
 export const ThemeContext = createContext(null);
+
 function App() {
     const [button, setButton] = useState("");
-    const [videoTimer, setVideotimer] = useState(0)
+    const [videoTimer, setVideoTimer] = useState(0);
+    const navigate = useNavigate();
 
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Tab') {
             e.preventDefault();
-        }else{
-            setButton(e.key)}
+        } else {
+            setButton(e.key);
+        }
     };
+
+    const handleUserActivity = () => {
+        setVideoTimer(0);
+    }
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("mousemove", handleUserActivity);
 
-        // document.addEventListener("mousemove", () => {console.log('hi')})
+        const activityTimer = setInterval(() => {
+            setVideoTimer((prevTimer) => prevTimer + 1);
+            if (videoTimer >= 10) {
+                navigate('/');
+            }
+        }, 1000);
+
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
+            document.removeEventListener("mousemove", handleUserActivity);
+            clearInterval(activityTimer);
         };
-    }, []);
-  return (
-    <>
-    <BrowserRouter>
-        <ThemeContext.Provider value={{button, setButton, videoTimer, setVideotimer}}>
-                <Routes>
-                    <Route element ={<Video />} path={'*'}/>
-                    <Route element ={<Main />} path={'/main'}/>
-                    <Route element ={<FinalyPage />} path={'/successfully'}/>
-                </Routes>
+    }, [navigate, videoTimer]);
+
+    return (
+        <ThemeContext.Provider value={{ button, setButton, videoTimer, setVideoTimer }}>
+            <Routes>
+                <Route element={<Video />} path={'*'} />
+                <Route element={<Main />} path={'/main'} />
+                <Route element={<FinalyPage />} path={'/successfully'} />
+            </Routes>
         </ThemeContext.Provider>
-    </BrowserRouter>
-    </>
-  )
+    );
 }
 
-export default App
+function AppWithRouter() {
+    return (
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    );
+}
+
+export default AppWithRouter;
