@@ -7,25 +7,27 @@ import Banner from "../Banner/Banner.tsx";
 const Video = () => {
     const videoRef = useRef(null);
     const [showBanner, setShowBanner] = useState(false);
+    const [videoTime, setVideoTime] = useState( localStorage.getItem('videoTime')  > 0 ?  localStorage.getItem('videoTime') : 0);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
             setShowBanner(true);
-        }, 5000); // Показать баннер после 5 секунд
-
-        return () => {
-            clearTimeout(timeout);
-        }
+        }, 5000);
     }, []);
+
 
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', position: 'relative', width: '100%'}}>
                 <Box>
-                    <CardCover sx={{ width: '100%', height: '100vh' }}>
+                    <CardCover sx={{ minWidth: '1280px', height: '720px', position: 'relative' }}>
                         <video
-                            autoPlay
+                            autoPlay={true}
                             ref={videoRef}
+                            muted
+                            onPlay={(e) => {
+                                videoRef.current.currentTime = videoTime
+                            }}
                         >
                             <source
                                 src={video}
@@ -34,7 +36,7 @@ const Video = () => {
                         </video>
                     </CardCover>
                 </Box>
-                {showBanner && <Banner />}
+                {showBanner && <Banner  />}
             </Box>
         </>
     )
