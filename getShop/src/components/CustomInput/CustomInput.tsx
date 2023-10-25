@@ -8,7 +8,7 @@ type TextMaskCustomProps = {
 };
 
 const TextMaskCustom = React.forwardRef<HTMLInputElement, TextMaskCustomProps>(function TextMaskCustom(props, ref) {
-    const { onChange, name, ...other } = props; // Добавил "name" к деструктурированным свойствам
+    const { onChange, name, ...other } = props;
     return (
         <IMaskInput
             {...other}
@@ -25,7 +25,7 @@ export default function CustomInput({ value, onChange }: { value: string, onChan
         <TextField
             value={value}
             onChange={(event) => onChange(event)}
-            inputComponent={TextMaskCustom}
+            inputcomponent={TextMaskCustom}
             variant="standard"
         />
     );

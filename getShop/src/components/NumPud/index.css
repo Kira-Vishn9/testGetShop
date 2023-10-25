@@ -21,7 +21,7 @@
 .keyboard div:nth-child(10) {
     grid-column: span 2;
 }
-.keyboard div:nth-child(12) {
+.keyboard .closeButton {
     display: flex;
     width: 65px;
     position: absolute;
@@ -32,29 +32,24 @@
     right: 20px;
     cursor: pointer;
     height: 28px;
+    justify-content: center;
 }
-.close-button{
-    display: flex;
-}
-.bar {
-    position: relative;
-    top: 50%;
-    left: 0;
-    transform: translate(55%, -50%) rotate(-45deg);
-    width: 30px;
-    height: 3px;
-    background: black;
-}
+/*.close-button{*/
+/*    display: flex;*/
+/*}*/
+/*.bar {*/
+/*    position: relative;*/
+/*    top: 50%;*/
+/*    left: 0;*/
+/*    transform: translate(55%, -50%) rotate(-45deg);*/
+/*    width: 30px;*/
+/*    height: 3px;*/
+/*    background: black;*/
+/*}*/
 
 .bar:nth-child(2) {
     transform: translate(-45%, -50%) rotate(45deg);
     background: black;
-}
-
-.keyboard .active {
-    pointer-events: none;
-    background: red;
-    color: #fff;
 }
 
 .keyboard button[data-value="Cтереть"] {
@@ -70,4 +65,10 @@
 button:focus {
     outline: none;
     box-shadow: none;
+}
+.keyboard .active {
+    pointer-events: none;
+    background: black;
+    color: white!important;
+    color: #fff!important;
 }

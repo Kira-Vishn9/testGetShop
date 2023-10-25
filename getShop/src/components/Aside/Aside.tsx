@@ -7,6 +7,8 @@ import Checkbox from "@mui/material/Checkbox";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import NumPud from "../NumPud/NumPud.tsx";
 import CustomInput from "../CustomInput/CustomInput.tsx";
+import {onValidNumber} from "../../service/service.ts";
+
 
 const theme = createTheme({
     components: {
@@ -82,7 +84,7 @@ const theme = createTheme({
 const Aside = () => {
     const [input, setInput] = useState("+7(___)___-__-__");
     const [isValidNumber, setIsValidNumber] = useState(false)
-    const [isDisabled, setIsDisabled] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
     const [isAllow, setIsAllow] = useState(false)
 
     const handleInputChange = (event) => {
@@ -168,6 +170,7 @@ const Aside = () => {
                         label="Согласие на обработку персональных данных"
                     />
                     <Button
+                        onClick={()=>{onValidNumber(input)}}
                         sx={{ color: "#4E4E4E", background: "#86D3F4", borderColor: "#4E4E4E", borderRaduis: '0', width: '284px', height: '52px', fontSize: '15px',
                             fontWeight: '900', letterSpacing: '0px' }}
                         variant="outlined"

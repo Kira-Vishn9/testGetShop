@@ -4,6 +4,7 @@ import CardMedia from '@mui/material/CardMedia';
 import img from '../../assets/jpg/qr-code.jpg';
 import { ThemeProvider ,createTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
     components: {
@@ -25,6 +26,11 @@ const theme = createTheme({
 });
 
 const Banner = () => {
+    const navigate = useNavigate();
+   const onChengeRouter = () => {
+       navigate('/main');
+    }
+
     return (
         <>
             <ThemeProvider theme={theme}>
@@ -49,6 +55,7 @@ const Banner = () => {
                         Сканируйте QR-код <br/> или нажмите ОК
                     </Typography>
                     <Button
+                        onClick={onChengeRouter}
                         sx={{width: '156px', height: '52px', m: 0, background: '#000'}}
                         variant="contained">OK</Button>
 

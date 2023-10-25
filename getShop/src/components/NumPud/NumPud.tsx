@@ -1,30 +1,34 @@
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../App';
 import './index.css';
+import {useNavigate} from "react-router-dom";
 
 const NumPad = ({setInput}) => {
-    let [currentRow, setCurrentRow] = useState(1)
-    let [currentCol, setCurrentCol] = useState(1)
+    let [currentRow, setCurrentRow] = useState<string | number>(1)
+    let [currentCol, setCurrentCol] = useState<string | number>(1)
     const [activeButton, setActiveButton] = useState([currentRow, currentCol]);
     const { button, setButton } = useContext(ThemeContext);
+    const navigate = useNavigate();
 
     const buttonsMatrix = [
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9],
         ['Cтереть', 0],
-        [
-            <div className={'close-button'}>
-                <span className={"bar"}></span>
-                <span className={"bar"}></span>
-            </div>
-        ]
+        ['x']
     ];
+    const onChengeRouter = () => {
+        navigate('/');
+    }
     const moveDown = (array) => {
         if(currentRow === 1 && currentCol === 2){
             setCurrentRow(3);
             setCurrentCol(  1)
             setActiveButton([3, 1]);
+        }else if (currentCol === 0 && currentRow === 3 || currentCol === 1 && currentRow === 3) {
+            setCurrentRow(4);
+            setCurrentCol(  0)
+            setActiveButton([4, 0]);
         }else if(currentRow === 2 && currentCol === 2){
             setCurrentRow(3);
             setCurrentCol(  1)
@@ -58,12 +62,15 @@ const NumPad = ({setInput}) => {
     }
     const onEnter = () => {
         const inputValue = buttonsMatrix[currentRow][currentCol]
-        if(inputValue == 'Cтереть') {
+        console.log(inputValue)
+        if(inputValue === 'Cтереть') {
             onBackspace()
-        } else{
+        }  else{
+            console.log(inputValue)
             onChangeInputValue(inputValue)
         }}
-    const onChangeInputValue = (button) => {
+    const onChangeInputValue = (button: string | number) => {
+        console.log(button)
         setInput((prevInput) => {
             const index = prevInput.indexOf("_");
             // if(index === 16 && isAllow) {
@@ -92,7 +99,7 @@ const NumPad = ({setInput}) => {
         });
         setButton('')
     }
-    const onChageActive = (row, col, button?: string | number) => {
+    const onChageActive = (row: string | number, col: string |number, button?: string | number) => {
         setCurrentRow(row);
         setCurrentCol(col)
         setActiveButton([row, col]);
@@ -100,7 +107,7 @@ const NumPad = ({setInput}) => {
         onChangeInputValue(button)
         }
     }
-    const onNavigaionNumber = (button) =>{
+    const onNavigaionNumber = (button: string | number) =>{
         switch (button){
             case '1':
                 console.log(1)
@@ -152,6 +159,11 @@ const NumPad = ({setInput}) => {
                 onChageActive(3, 0)
                 onBackspace()
                 break;
+            case 'x':
+                console.log('x')
+                onChageActive(4, 0)
+                onChengeRouter()
+                break;
             default:
                 console.log(JSON.stringify(button))
         }
@@ -173,19 +185,26 @@ const NumPad = ({setInput}) => {
         if(button === 'Enter'){
             onEnter()
         }
+        if(button === 'Escape'){
+            onChengeRouter()
+        }
         onNavigaionNumber(button)
         setButton('')
     }
 
     useEffect(() => {
+
         handleKeyPress();
     }, [button]);
 
-    const handleButtonClick = (value) => {
+    const handleButtonClick = (value: string | number) => {
+
         if (value === 'Cтереть') {
             onBackspace()
             onChageActive(3, 0)
-            }else{
+            } else if(value === 'x'){
+            onChengeRouter()
+        }else{
             onNavigaionNumber(value.toString())
             setButton('')
         }
@@ -196,16 +215,28 @@ const NumPad = ({setInput}) => {
 
         for (let i = 0; i < buttonsMatrix.length; i++) {
             for (let j = 0; j < buttonsMatrix[i].length; j++) {
-                buttonElements.push(
-                    <div
-                        key={buttonsMatrix[i][j]}
-                        className={`keyboard-button ${activeButton[0] === i && activeButton[1] === j ? 'active' : ''}`}
-                        onClick={() => handleButtonClick(buttonsMatrix[i][j])}
-                    >
-                        {buttonsMatrix[i][j]}
-                    </div>
-                );
-            }
+                if(i === 4 && j ===0) {
+                    buttonElements.push(
+                        <div
+                            key={buttonsMatrix[i][j]}
+                            className={`keyboard-button closeButton ${activeButton[0] === i && activeButton[1] === j ? 'active' : ''}`}
+                            onClick={() => handleButtonClick(buttonsMatrix[i][j])}
+                        >
+                            {buttonsMatrix[i][j]}
+                        </div>
+                    );
+                } else{
+                    buttonElements.push(
+                        <div
+                            key={buttonsMatrix[i][j]}
+                            className={`keyboard-button ${activeButton[0] === i && activeButton[1] === j ? 'active' : ''}`}
+                            onClick={() => handleButtonClick(buttonsMatrix[i][j])}
+                        >
+                            {buttonsMatrix[i][j]}
+                        </div>
+                    );
+                }
+                }
         }
 
         return buttonElements;

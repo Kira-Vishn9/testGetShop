@@ -1,6 +1,8 @@
 import './App.css'
-import {useEffect, useState, createContext} from "react";
+import React, {useEffect, useState, createContext} from "react";
 import Main from "./page/Main.tsx";
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Video from "./components/Video/Video.tsx";
 
 export const ThemeContext = createContext(null);
 function App() {
@@ -9,7 +11,8 @@ function App() {
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Tab') {
             e.preventDefault();
-        }else{setButton(e.key)}
+        }else{
+            setButton(e.key)}
 
     };
 
@@ -21,9 +24,14 @@ function App() {
     }, []);
   return (
     <>
+    <BrowserRouter>
         <ThemeContext.Provider value={{button, setButton}}>
-            <Main />
+                <Routes>
+                    <Route element ={<Video />} path={'*'}/>
+                    <Route element ={<Main />} path={'/main'}/>
+                </Routes>
         </ThemeContext.Provider>
+    </BrowserRouter>
     </>
   )
 }
