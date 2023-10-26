@@ -26,10 +26,11 @@ const theme = createTheme({
     },
 });
 
-const Banner = () => {
+const Banner = ( {onSave} ) => {
     const navigate = useNavigate();
 
    const onChengeRouter = () => {
+       onSave()
        navigate('/main');
     }
 
