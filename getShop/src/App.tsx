@@ -25,6 +25,7 @@ function App() {
             e.preventDefault();
         } else {
             setButton(e.key);
+            handleUserActivity()
         }
     };
 
