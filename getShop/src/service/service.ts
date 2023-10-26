@@ -10,7 +10,7 @@ export const onValidNumber = (inputValue: string) => {
     return Axios
         .get(`http://apilayer.net/api/validate?access_key=${accessKey}&number=${number}&country_code=${country_code}&format=${format}`)
         .then((response) => {
-            return response.data.valid;
+            return response.data;
         })
         .catch((error) => {
             console.error('Произошла ошибка при выполнении запроса:', error);

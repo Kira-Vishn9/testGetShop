@@ -107,8 +107,8 @@ const Aside = () => {
             try {
                 if (!input.includes("_")) {
                     const data = await onValidNumber(input);
-                    setIsValidNumber(data)
-                    setIsError(!data)
+                    setIsValidNumber(data?.valid)
+                    setIsError(!data?.valid)
                     isSendNumber()
                 }
             } catch (error) {
