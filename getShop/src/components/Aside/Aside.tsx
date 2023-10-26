@@ -1,14 +1,13 @@
 import {ChangeEvent, useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import NumPud from "../NumPud/NumPud.tsx";
 import CustomInput from "../CustomInput/CustomInput.tsx";
 import {onValidNumber} from "../../service/service.ts";
-import {useNavigate} from "react-router-dom";
+
 
 const theme = createTheme({
     components: {
@@ -100,7 +99,6 @@ const Aside = () => {
     const [isDisabled, setIsDisabled] = useState(true);
     const [isAllow, setIsAllow] = useState(false)
     const [isError, setIsError] = useState(false)
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -133,9 +131,9 @@ const Aside = () => {
         <>
             <ThemeProvider theme={theme}>
                 <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '720px'}}>
-                <Box sx={{ background: "#86D3F4", width: "380px", height: "100%", textAlign: '-webkit-center',display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Box sx={{ background: "#86D3F4", width: "380px", height: "100%",display: 'flex', flexDirection: 'column',  alignItems: 'center' }}>
                     <Typography
-                        sx={{fontSize: '25px', width: "290px", height: "60px", lineHeight: 1.18, fontWeight: 900, m: '-4px -1px 3px 0px',
+                        sx={{fontSize: '25px', width: "290px", height: "60px", lineHeight: 1.18, fontWeight: 900, m: '70px 1px 3px 0px',
                             letterSpacing: '-0.6px', wordSpacing: '1px'}}>
                         Введите ваш номер мобильного телефона
                     </Typography>
@@ -152,8 +150,7 @@ const Aside = () => {
                         }}
                     >и с Вами свяжется наш менеджер для дальнейшей консультации
                     </Typography>
-                    <NumPud setIsDisabled={setIsDisabled} setInput={setInput} />
-
+                    <NumPud setIsDisabled={setIsDisabled} setInput={setInput} isDisabled={isDisabled}/>
                     {isError ? (
                         <Typography sx={{ color: 'red', textTransform: 'uppercase' }}>Неверно введён номер</Typography>
                     ) : (
@@ -163,15 +160,6 @@ const Aside = () => {
                             label="Согласие на обработку персональных данных"
                         />
                     )}
-                    <Button
-                        onClick={()=>{navigate('/successfully')}}
-                        sx={{ color: "#4E4E4E", background: "#86D3F4", borderColor: "#4E4E4E", borderRadius: '0', width: '284px', height: '52px', fontSize: '15px',
-                            fontWeight: '900', letterSpacing: '0px' }}
-                        variant="outlined"
-                        disabled={isDisabled}
-                    >
-                        Подтвердить номер
-                    </Button>
                 </Box>
                 </Box>
             </ThemeProvider>

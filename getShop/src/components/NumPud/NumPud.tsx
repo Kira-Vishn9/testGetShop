@@ -1,16 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext, ThemeContextProps } from '../../App';
+import Button from "@mui/material/Button";
 import './index.css';
 import {useNavigate} from "react-router-dom";
 
 interface NumPadProps {
     setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
     setInput: React.Dispatch<React.SetStateAction<string>>;
+    isDisabled: boolean
 }
 
-const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
-    let [currentRow, setCurrentRow] = useState<number>(1);
-    let [currentCol, setCurrentCol] = useState<number>(1);
+const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput, isDisabled }) => {
+    const [currentRow, setCurrentRow] = useState<number>(1);
+    const [currentCol, setCurrentCol] = useState<number>(1);
     const [activeButton, setActiveButton] = useState<[string | number, string | number]>([currentRow, currentCol]);
     const { button, setButton } = useContext<ThemeContextProps>(ThemeContext);
 
@@ -21,6 +23,7 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
         [4, 5, 6],
         [7, 8, 9],
         ['Cтереть', 0],
+        ['Подтвердить номер'],
         ['X']
     ];
     const onChengeRouter = () => {
@@ -31,10 +34,14 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
             setCurrentRow(3);
             setCurrentCol(1);
             setActiveButton([3, 1]);
-        } else if ((currentCol === 0 && currentRow === 3) || (currentCol === 1 && currentRow === 3)) {
+        } else if ((currentCol === 0 && currentRow === 3 && !isDisabled)  || (currentCol === 1 && currentRow === 3 && !isDisabled) ) {
             setCurrentRow(4);
             setCurrentCol(0);
             setActiveButton([4, 0]);
+        }else if((currentCol === 0 && currentRow === 3 && isDisabled)  || (currentCol === 1 && currentRow === 3 && isDisabled )){
+            setCurrentRow(5);
+            setCurrentCol(0);
+            setActiveButton([5, 0]);
         } else if (currentRow === 2 && currentCol === 2) {
             setCurrentRow(3);
             setCurrentCol(1);
@@ -46,7 +53,12 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
     }
 
     const moveUp = () => {
-        if(currentRow === 3 && currentCol === 1){
+        if(currentCol === 0 && currentRow === 5 && isDisabled){
+            setCurrentRow(3);
+            setCurrentCol(  0)
+            setActiveButton([3, 0])
+
+        } else if(currentRow === 3 && currentCol === 1){
             setCurrentRow(2);
             setCurrentCol(  2)
             setActiveButton([2, 2]);
@@ -71,8 +83,10 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
         const inputValue: string | number = buttonsMatrix[currentRow][currentCol]
         if(inputValue === 'Cтереть') {
             onBackspace()
-        }  else if (inputValue === 'X') {
+        }else if (inputValue === 'X') {
             onChengeRouter()
+        }else if(inputValue === 'Подтвердить номер'){
+            navigate('/successfully')
         }else{
             onChangeInputValue(inputValue)
         }}
@@ -152,8 +166,12 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
                 onChageActive(3, 0)
                 onBackspace()
                 break;
-            case 'X':
+            case 'Подтвердить номер':
                 onChageActive(4, 0)
+                navigate('/successfully')
+                break;
+            case 'X':
+                onChageActive(5, 0)
                 onChengeRouter()
                 break;
             default:
@@ -174,7 +192,7 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
             moveUp()
         }
         if(button === 'ArrowDown'){
-                moveDown(buttonsMatrix)
+            moveDown(buttonsMatrix)
         }
         if(button === 'Enter'){
             onEnter()
@@ -193,13 +211,15 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
     }, [button]);
 
     const handleButtonClick = (value: string | number) => {
-
+        console.log(value)
         if (value === 'Cтереть') {
             onBackspace()
             onChageActive(3, 0)
             setIsDisabled(true)
             } else if(value === 'X'){
             onChengeRouter()
+        }else if(value === 'Подтвердить номер'){
+            navigate('/successfully')
         }else{
             onNavigaionNumber(value.toString())
             if (setButton) {
@@ -214,6 +234,20 @@ const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
         for (let i = 0; i < buttonsMatrix.length; i++) {
             for (let j = 0; j < buttonsMatrix[i].length; j++) {
                 if(i === 4 && j ===0) {
+                    buttonElements.push(
+                    <Button
+                        disabled={isDisabled}
+                        variant="outlined"
+                        sx={{ color: "#4E4E4E", background: "#86D3F4", borderColor: "#4E4E4E", borderRadius: '0', width: '284px', height: '52px', fontSize: '15px',
+                            fontWeight: '900', letterSpacing: '0px', position: 'absolute', bottom: '72px'
+                        }}
+                        key={buttonsMatrix[i][j]}
+                        className={` ${activeButton[0] === i && activeButton[1] === j && !isDisabled ? 'active' : ''}`}
+                        onClick={() => handleButtonClick(buttonsMatrix[i][j])}
+                    >
+                        {buttonsMatrix[i][j]}
+                    </Button>)
+                }else if(i === 5 && j ===0) {
                     buttonElements.push(
                         <div
                             key={buttonsMatrix[i][j]}
