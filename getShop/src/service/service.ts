@@ -8,8 +8,9 @@ export const onValidNumber = (inputValue: string) => {
     const number = inputValue.replace('7', '');
 
     return Axios
-        .get(`https://apilayer.net/api/validate?access_key=${accessKey}&number=${number}&country_code=${country_code}&format=${format}`)
+        .get(`http://apilayer.net/api/validate?access_key=${accessKey}&number=${number}&country_code=${country_code}&format=${format}`)
         .then((response) => {
+            console.log(response)
             return response.data;
         })
         .catch((error) => {
