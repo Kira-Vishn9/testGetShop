@@ -3,20 +3,40 @@ import video from '../../assets/video/volvo.mp4';
 import CardCover from '@mui/joy/CardCover';
 import Box from "@mui/material/Box";
 import Banner from "../Banner/Banner.tsx";
+
 const Video = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [showBanner, setShowBanner] = useState(false);
-    const [videoTime] = useState(localStorage.getItem('videoTime')  ? localStorage.getItem('videoTime') : 0);
+    const [videoTime, setVideoTime] = useState(0);
 
     useEffect(() => {
+        const storedVideoTime = localStorage.getItem('videoTime');
+        if (storedVideoTime !== null) {
+            const parsedTime = parseFloat(storedVideoTime);
+            if (!isNaN(parsedTime) && parsedTime <= 73) {
+                setVideoTime(parsedTime);
+            } else {
+                setVideoTime(0);
+                localStorage.setItem('videoTime', '0');
+            }
+        }
+
         setTimeout(() => {
             setShowBanner(true);
         }, 5000);
+
     }, []);
 
     const onSave = () => {
         const currentTime = videoRef.current!.currentTime;
         localStorage.setItem('videoTime', currentTime.toString());
+    }
+
+    const handleVideoEnd = () => {
+        localStorage.setItem('videoTime', '0');
+        setVideoTime(0);
+        videoRef.current!.currentTime = 0;
+        videoRef.current!.play();
     }
 
     return (
@@ -29,12 +49,13 @@ const Video = () => {
                             ref={videoRef}
                             muted
                             onPlay={() => {
-                                videoRef.current!.currentTime = Number(videoTime);
+                                videoRef.current!.currentTime = videoTime;
                             }}
+                            onEnded={handleVideoEnd}
                         >
                             <source
                                 src={video}
-                                type="video/mp4"
+                                type={'video/mp4'}
                             />
                         </video>
                     </CardCover>
@@ -45,4 +66,4 @@ const Video = () => {
     )
 }
 
-export default Video
+export default Video;
