@@ -1,27 +1,22 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import video from '../../assets/video/volvo.mp4';
 import CardCover from '@mui/joy/CardCover';
 import Box from "@mui/material/Box";
 import Banner from "../Banner/Banner.tsx";
 const Video = () => {
-    const videoRef = useRef(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const [showBanner, setShowBanner] = useState(false);
-    const [videoTime, setVideoTime] = useState(localStorage.getItem('videoTime')  ? localStorage.getItem('videoTime') : 0);
+    const [videoTime] = useState(localStorage.getItem('videoTime')  ? localStorage.getItem('videoTime') : 0);
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
+        setTimeout(() => {
             setShowBanner(true);
         }, 5000);
     }, []);
 
     const onSave = () => {
-        const currentTime = videoRef.current.currentTime; // Получаем текущее время видео
-        console.log(currentTime); // Выводим текущее время видео в консоль
-
-        // Вы можете выполнить другие действия с currentTime, если необходимо
-
-        // Например, сохранить текущее время в localStorage
-        localStorage.setItem('videoTime', currentTime);
+        const currentTime = videoRef.current!.currentTime;
+        localStorage.setItem('videoTime', currentTime.toString());
     }
 
     return (
@@ -33,8 +28,8 @@ const Video = () => {
                             autoPlay={true}
                             ref={videoRef}
                             muted
-                            onPlay={(e) => {
-                                videoRef.current.currentTime = videoTime;
+                            onPlay={() => {
+                                videoRef.current!.currentTime = Number(videoTime);
                             }}
                         >
                             <source

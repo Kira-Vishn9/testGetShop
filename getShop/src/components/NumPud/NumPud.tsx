@@ -1,13 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
-import { ThemeContext } from '../../App';
+import { ThemeContext, ThemeContextProps } from '../../App';
 import './index.css';
 import {useNavigate} from "react-router-dom";
 
-const NumPad = ({setIsDisabled,setInput}) => {
-    let [currentRow, setCurrentRow] = useState<string | number>(1)
-    let [currentCol, setCurrentCol] = useState<string | number>(1)
-    const [activeButton, setActiveButton] = useState([currentRow, currentCol]);
-    const { button, setButton } = useContext(ThemeContext);
+interface NumPadProps {
+    setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+    setInput: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const NumPad: React.FC<NumPadProps> = ({ setIsDisabled, setInput }) => {
+    let [currentRow, setCurrentRow] = useState<number>(1);
+    let [currentCol, setCurrentCol] = useState<number>(1);
+    const [activeButton, setActiveButton] = useState<[string | number, string | number]>([currentRow, currentCol]);
+    const { button, setButton } = useContext<ThemeContextProps>(ThemeContext);
+
     const navigate = useNavigate();
 
     const buttonsMatrix = [
@@ -20,24 +26,25 @@ const NumPad = ({setIsDisabled,setInput}) => {
     const onChengeRouter = () => {
         navigate('/');
     }
-    const moveDown = (array) => {
-        if(currentRow === 1 && currentCol === 2){
+    const moveDown = (array: (string | number)[][]) => {
+        if (currentRow === 1 && currentCol === 2) {
             setCurrentRow(3);
-            setCurrentCol(  1)
+            setCurrentCol(1);
             setActiveButton([3, 1]);
-        }else if (currentCol === 0 && currentRow === 3 || currentCol === 1 && currentRow === 3) {
+        } else if ((currentCol === 0 && currentRow === 3) || (currentCol === 1 && currentRow === 3)) {
             setCurrentRow(4);
-            setCurrentCol(  0)
+            setCurrentCol(0);
             setActiveButton([4, 0]);
-        }else if(currentRow === 2 && currentCol === 2){
+        } else if (currentRow === 2 && currentCol === 2) {
             setCurrentRow(3);
-            setCurrentCol(  1)
-            setActiveButton([3, 1]);}
-        else if (currentRow < array.length - 1) {
+            setCurrentCol(1);
+            setActiveButton([3, 1]);
+        } else if (currentRow< array.length - 1) {
             setCurrentRow(currentRow + 1);
             setActiveButton([currentRow + 1, currentCol]);
         }
     }
+
     const moveUp = () => {
         if(currentRow === 3 && currentCol === 1){
             setCurrentRow(2);
@@ -54,15 +61,14 @@ const NumPad = ({setIsDisabled,setInput}) => {
             setActiveButton([currentRow, currentCol - 1]);
         }
     }
-    const moveRight = (array) => {
+    const moveRight = (array: (string | number)[][]) => {
         if (currentCol < array[currentRow].length - 1) {
             setCurrentCol(currentCol + 1);
             setActiveButton([currentRow, currentCol + 1]);
         }
     }
     const onEnter = () => {
-        const inputValue = buttonsMatrix[currentRow][currentCol]
-        console.log(inputValue)
+        const inputValue: string | number = buttonsMatrix[currentRow][currentCol]
         if(inputValue === 'Cтереть') {
             onBackspace()
         }  else if (inputValue === 'X') {
@@ -74,8 +80,8 @@ const NumPad = ({setIsDisabled,setInput}) => {
         setInput((prevInput) => {
             const index = prevInput.indexOf("_");
             if (index !== -1) {
-                const newValue = prevInput.split("");
-                newValue[index] = button;
+                const newValue: string[] = prevInput.split("");
+                newValue[index] = button.toString();
                 return newValue.join("");
             }else{
                 return prevInput
@@ -94,9 +100,11 @@ const NumPad = ({setIsDisabled,setInput}) => {
             return prevInput;
         });
         setIsDisabled(true)
-        setButton('')
+        if (setButton) {
+            setButton(' ')
+        }
     }
-    const onChageActive = (row: string | number, col: string |number, button?: string | number) => {
+    const onChageActive = (row: number, col: number, button?: string | number) => {
         setCurrentRow(row);
         setCurrentCol(col)
         setActiveButton([row, col]);
@@ -107,64 +115,53 @@ const NumPad = ({setIsDisabled,setInput}) => {
     const onNavigaionNumber = (button: string | number) =>{
         switch (button){
             case '1':
-                console.log(1)
                 onChageActive(0, 0, button)
                 break;
             case '2':
-                console.log(2)
                 onChageActive(0, 1, button)
                 break;
             case '3':
-                console.log(3)
                 onChageActive(0, 2, button)
                 break;
             case '4':
-                console.log(4)
                 onChageActive(1, 0, button)
                 break;
             case '5':
-                console.log(5)
                 onChageActive(1, 1, button)
                 break;
             case '6':
-                console.log(6)
                 onChageActive(1, 2, button)
                 break;
             case '7':
-                console.log(7)
                 onChageActive(2, 0, button)
                 break;
             case '8':
-                console.log(8)
                 onChageActive(2, 1, button)
                 break;
             case '9':
-                console.log(9)
                 onChageActive(2, 2, button)
                 break;
             case '0':
-                console.log(0)
                 onChageActive(3, 1, button)
                 break;
             case 'Backspace':
-                console.log('Backspace')
                 onChageActive(3, 0)
                 onBackspace()
                 break;
             case 'Стереть':
-                console.log('Стереть')
                 onChageActive(3, 0)
                 onBackspace()
                 break;
             case 'X':
-                console.log('X')
                 onChageActive(4, 0)
                 onChengeRouter()
                 break;
             default:
                 console.log(JSON.stringify(button))
         }
-        setButton('')
+        if (setButton) {
+            setButton('')
+        }
     }
     const handleKeyPress = () => {
         if(button === 'ArrowLeft'){
@@ -186,7 +183,9 @@ const NumPad = ({setIsDisabled,setInput}) => {
             onChengeRouter()
         }
         onNavigaionNumber(button)
-        setButton('')
+        if (setButton) {
+            setButton('')
+        }
     }
 
     useEffect(() => {
@@ -203,7 +202,9 @@ const NumPad = ({setIsDisabled,setInput}) => {
             onChengeRouter()
         }else{
             onNavigaionNumber(value.toString())
-            setButton('')
+            if (setButton) {
+                setButton('')
+            }
         }
     };
 

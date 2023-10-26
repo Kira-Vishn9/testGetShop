@@ -5,7 +5,15 @@ import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import Video from "./components/Video/Video.tsx";
 import FinalyPage from "./page/FinalyPage.tsx";
 
-export const ThemeContext = createContext(null);
+export interface ThemeContextProps {
+    button: string;
+    setButton?: React.Dispatch<React.SetStateAction<string>>;
+    videoTimer: number;
+    setVideoTimer?: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const ThemeContext = createContext<ThemeContextProps>({button: '',
+videoTimer: 0});
 
 function App() {
     const [button, setButton] = useState("");

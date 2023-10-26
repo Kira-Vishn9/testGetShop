@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -9,7 +9,6 @@ import NumPud from "../NumPud/NumPud.tsx";
 import CustomInput from "../CustomInput/CustomInput.tsx";
 import {onValidNumber} from "../../service/service.ts";
 import {useNavigate} from "react-router-dom";
-
 
 const theme = createTheme({
     components: {
@@ -119,35 +118,8 @@ const Aside = () => {
 
         fetchData();
     }, [input, isAllow]);
-    const handleInputChange = (event) => {
-        if(event.nativeEvent.inputType === 'deleteContentBackward') {
-            setInput((prevInput) => {
-                const lastIndex = prevInput.split("").reverse().findIndex((char, index) => {
-                    return index <14 && !isNaN(parseInt(char, 14));
-                });
-                if (lastIndex !== -1) {
-                    const lastNumber = prevInput.length - lastIndex - 1;
-                    prevInput = prevInput.substring(0, lastNumber) + "_" + prevInput.substring(lastNumber + 1);
-                }
-                return prevInput;
-            });
-            setIsDisabled(true)
-        } else{
-            const inputValue = event.nativeEvent.data
-            setInput((prevInput) => {
-                const index = prevInput.indexOf("_");
-                if (index !== -1) {
-                    const newValue = prevInput.split("");
-                    newValue[index] = inputValue;
-                    return newValue.join("");
-                }else{
-                    return prevInput
-                }
-            });
-        }
-    };
 
-    const getAllow = (event) => {
+    const getAllow = (event: ChangeEvent<HTMLInputElement>) => {
         setIsAllow(event.target.checked)
     }
     const isSendNumber = () => {
@@ -167,7 +139,7 @@ const Aside = () => {
                             letterSpacing: '-0.6px', wrodSpacing: '1px'}}>
                         Введите ваш номер мобильного телефона
                     </Typography>
-                    <CustomInput isError={isError} value={input} onChange={handleInputChange} />
+                    <CustomInput isError={isError} value={input}  />
                     <Typography
                         sx={{
                             width: '290px',
@@ -180,7 +152,7 @@ const Aside = () => {
                         }}
                     >и с Вами свяжется наш менеджер для дальнейшей консультации
                     </Typography>
-                    <NumPud setIsDisabled={setIsDisabled} input={input} setInput={setInput} />
+                    <NumPud setIsDisabled={setIsDisabled} setInput={setInput} />
 
                     {isError ? (
                         <Typography sx={{ color: 'red', textTransform: 'uppercase' }}>Неверно введён номер</Typography>

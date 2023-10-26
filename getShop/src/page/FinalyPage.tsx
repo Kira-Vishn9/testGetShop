@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 const FinalyPage = () => {
     const navigate = useNavigate();
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
         if(e.key === 'Enter' || e.key === "Escape") {
             navigate('/')
         }

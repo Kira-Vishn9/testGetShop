@@ -5,6 +5,7 @@ import img from '../../assets/jpg/qr-code.jpg';
 import { ThemeProvider ,createTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { FunctionComponent } from 'react';
 
 
 const theme = createTheme({
@@ -26,7 +27,7 @@ const theme = createTheme({
     },
 });
 
-const Banner = ( {onSave} ) => {
+const Banner: FunctionComponent<{ onSave: Function }> = ({ onSave }) => {
     const navigate = useNavigate();
 
    const onChengeRouter = () => {
