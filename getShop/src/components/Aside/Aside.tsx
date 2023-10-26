@@ -136,7 +136,7 @@ const Aside = () => {
                 <Box sx={{ background: "#86D3F4", width: "380px", height: "100%", textAlign: '-webkit-center',display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Typography
                         sx={{fontSize: '25px', width: "290px", height: "60px", lineHeight: 1.18, fontWeight: 900, m: '-4px -1px 3px 0px',
-                            letterSpacing: '-0.6px', wrodSpacing: '1px'}}>
+                            letterSpacing: '-0.6px', wordSpacing: '1px'}}>
                         Введите ваш номер мобильного телефона
                     </Typography>
                     <CustomInput isError={isError} value={input}  />
@@ -165,7 +165,7 @@ const Aside = () => {
                     )}
                     <Button
                         onClick={()=>{navigate('/successfully')}}
-                        sx={{ color: "#4E4E4E", background: "#86D3F4", borderColor: "#4E4E4E", borderRaduis: '0', width: '284px', height: '52px', fontSize: '15px',
+                        sx={{ color: "#4E4E4E", background: "#86D3F4", borderColor: "#4E4E4E", borderRadius: '0', width: '284px', height: '52px', fontSize: '15px',
                             fontWeight: '900', letterSpacing: '0px' }}
                         variant="outlined"
                         disabled={isDisabled}
