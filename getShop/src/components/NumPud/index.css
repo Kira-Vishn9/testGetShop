@@ -21,6 +21,7 @@
 .keyboard div:nth-child(10) {
     grid-column: span 2;
 }
+
 .keyboard .closeButton {
     display: flex;
     width: 65px;
@@ -34,6 +35,7 @@
     height: 28px;
     justify-content: center;
 }
+
 /*.close-button{*/
 /*    display: flex;*/
 /*}*/
@@ -66,9 +68,10 @@ button:focus {
     outline: none;
     box-shadow: none;
 }
+
 .keyboard .active {
     pointer-events: none;
     background: black;
-    color: white!important;
-    color: #fff!important;
+    color: white !important;
+    color: #fff !important;
 }

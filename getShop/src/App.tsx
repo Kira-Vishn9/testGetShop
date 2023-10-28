@@ -1,73 +1,77 @@
 import './App.css'
-import { useEffect, useState, createContext } from "react";
-import Main from "./page/Main.tsx";
+import { createContext, useEffect, useState } from 'react'
+import Main from './page/Main.tsx'
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
-import Video from "./components/Video/Video.tsx";
-import FinalyPage from "./page/FinalyPage.tsx";
+import Video from './components/Video/Video.tsx'
+import FinalyPage from './page/FinalyPage.tsx'
 
 export interface ThemeContextProps {
-    button: string;
-    setButton?: React.Dispatch<React.SetStateAction<string>>;
-    videoTimer: number;
-    setVideoTimer?: React.Dispatch<React.SetStateAction<number>>;
+  button: string
+  setButton?: React.Dispatch<React.SetStateAction<string>>
+  videoTimer: number
+  setVideoTimer?: React.Dispatch<React.SetStateAction<number>>
 }
 
-export const ThemeContext = createContext<ThemeContextProps>({button: '',
-videoTimer: 0});
+export const ThemeContext = createContext<ThemeContextProps>({
+  button: '',
+  videoTimer: 0
+})
 
-function App() {
-    const [button, setButton] = useState("");
-    const [videoTimer, setVideoTimer] = useState(0);
-    const navigate = useNavigate();
+function App (): JSX.Element {
+  const [button, setButton] = useState('')
+  const [videoTimer, setVideoTimer] = useState(0)
+  const navigate = useNavigate()
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Tab') {
-            e.preventDefault();
-        } else {
-            setButton(e.key);
-            handleUserActivity()
-        }
-    };
-
-    const handleUserActivity = () => {
-        setVideoTimer(0);
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Tab') {
+      e.preventDefault()
+    } else {
+      setButton(e.key)
+      handleUserActivity()
     }
+  }
 
-    useEffect(() => {
-        document.addEventListener("keydown", handleKeyDown);
-        document.addEventListener("mousemove", handleUserActivity);
+  const handleUserActivity = () => {
+    setVideoTimer(0)
+  }
 
-        const activityTimer = setInterval(() => {
-            setVideoTimer((prevTimer) => prevTimer + 1);
-            if (videoTimer >= 10) {
-                navigate('/');
-            }
-        }, 1000);
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousemove', handleUserActivity)
 
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-            document.removeEventListener("mousemove", handleUserActivity);
-            clearInterval(activityTimer);
-        };
-    }, [navigate, videoTimer]);
+    const activityTimer = setInterval(() => {
+      setVideoTimer(prevTimer => prevTimer + 1)
+      if (videoTimer >= 10) {
+        navigate('/')
+      }
+    }, 1000)
 
-    return (
-        <ThemeContext.Provider value={{ button, setButton, videoTimer, setVideoTimer }}>
-            <Routes>
-                <Route element={<Video />} path={'*'} />
-                <Route element={<Main />} path={'/main'} />
-                <Route element={<FinalyPage />} path={'/successfully'} />
-            </Routes>
-        </ThemeContext.Provider>
-    );
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('mousemove', handleUserActivity)
+      clearInterval(activityTimer)
+    }
+  }, [navigate, videoTimer])
+
+  return (
+    <ThemeContext.Provider
+      value={{ button, setButton, videoTimer, setVideoTimer }}
+    >
+      <Routes>
+        <Route element={<Video />} path={'*'} />
+        <Route element={<Main />} path={'/main'} />
+        <Route element={<FinalyPage />} path={'/successfully'} />
+      </Routes>
+    </ThemeContext.Provider>
+  )
 }
 
-function AppWithRouter() {
-    return (
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    );
+function AppWithRouter () {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  )
 }
 
-export default AppWithRouter;
+export default AppWithRouter
